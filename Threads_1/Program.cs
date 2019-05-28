@@ -16,21 +16,18 @@ namespace Threads_1
 
             //получаем имя потока
             Console.WriteLine("Имя потока: {0}", t.Name);
-            t.Name = "Метод Main";
-            Console.WriteLine("Имя потока: {0}", t.Name);
             Console.WriteLine("Запущен ли поток: {0}", t.IsAlive);
             Console.WriteLine("Приоритет потока: {0}", t.Priority);
-            Console.WriteLine("Статус потока: {0}", t.ThreadState);
-            // получаем домен приложения
-            Console.WriteLine("Домен приложения: {0}", Thread.GetDomain().FriendlyName);
+            Console.WriteLine("Состояние потока: {0}", t.ThreadState);            
+            Console.WriteLine("Домен приложения: {0}", Thread.GetDomain().FriendlyName); // получаем домен приложения
 
             // создаем новый поток
             Thread myThread = new Thread(new ThreadStart(Count));
             myThread.Start(); // запускаем поток
 
-            for (int i = 1; i < 9; i++)
+            for (int i = 1; i < 1000; i++)
             {
-                Console.WriteLine("Главный поток:");
+                Console.WriteLine("Основной поток:");
                 Console.WriteLine(i * i);
                 Thread.Sleep(300);
             }
@@ -38,12 +35,16 @@ namespace Threads_1
 
         public static void Count()
         {
-            for (int i = 1; i < 9; i++)
+            for (int i = 1; i < 10; i++)
             {
-                Console.WriteLine("Второй поток:");
-                Console.WriteLine(i * i);                
+                Console.WriteLine("Дочерний поток:");
+                Console.WriteLine(i * i);
+                for (int j = 0; j < 100000000; j++)  // нагружаем процессор бесполезными вычислениями))
+                {
+                    double x = 123;
+                    double y = x * Math.Pow(x, x++);
+                }
                 Thread.Sleep(300);
-                Thread.CurrentThread.Abort();
             }
         }
     }
